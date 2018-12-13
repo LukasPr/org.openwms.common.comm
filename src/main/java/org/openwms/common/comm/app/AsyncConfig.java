@@ -16,6 +16,7 @@
 package org.openwms.common.comm.app;
 
 import org.openwms.core.SpringProfiles;
+import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.amqp.rabbit.config.RetryInterceptorBuilder;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
@@ -55,6 +56,11 @@ class AsyncConfig {
         RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
         rabbitTemplate.setMessageConverter(jsonConverter());
         return rabbitTemplate;
+    }
+
+    @Bean
+    public FanoutExchange fanoutExchange() {
+        return new FanoutExchange("lukas.ex.req");
     }
 
 }
