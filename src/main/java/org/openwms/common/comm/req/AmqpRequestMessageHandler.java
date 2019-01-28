@@ -19,7 +19,6 @@ import org.ameba.annotation.Measured;
 import org.openwms.core.SpringProfiles;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.core.FanoutExchange;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Profile;
@@ -43,14 +42,13 @@ class AmqpRequestMessageHandler implements Function<GenericMessage<RequestMessag
     private final AmqpTemplate amqpTemplate;
     private final String exchangeName;
     private final String routingKey;
+    private final FanoutExchange fanout;
 
-    @Autowired
-    private FanoutExchange fanout;
-
-    AmqpRequestMessageHandler(AmqpTemplate amqpTemplate, @Value("${owms.driver.req.exchange-name}") String exchangeName, @Value("${owms.driver.req.routing-key}") String routingKey) {
+    AmqpRequestMessageHandler(AmqpTemplate amqpTemplate, @Value("${owms.driver.req.exchange-name}") String exchangeName, @Value("${owms.driver.req.routing-key}") String routingKey, FanoutExchange fanout) {
         this.amqpTemplate = amqpTemplate;
         this.exchangeName = exchangeName;
         this.routingKey = routingKey;
+        this.fanout = fanout;
     }
 
     /**
